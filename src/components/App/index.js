@@ -2,6 +2,8 @@ import React, { Fragment, useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Input from "@material-ui/core/Input";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
 
 const PATH_BASE = "https://jobs.github.com/positions.json";
 const PARAM_DESCRIPTION = "description=";
@@ -37,22 +39,38 @@ const App = () => {
   };
 
   return (
-    <Fragment>
+    <Container component="main" maxWidth="md">
       <CssBaseline />
       <form onSubmit={handleSubmit}>
-        <Input
-          placeholder="role"
-          value={description}
-          onChange={handleChange}
-        ></Input>
-        <Input
-          placeholder="location"
-          value={location}
-          onChange={handleChangeLocation}
-        ></Input>
-        <Button variant="contained" type="submit">
-          Default
-        </Button>
+        <Grid container direction="row" spacing={3}>
+          <Grid item xs={12} sm={5}>
+            <Input
+              placeholder="role"
+              value={description}
+              onChange={handleChange}
+              fullWidth
+            ></Input>
+          </Grid>
+          <Grid item xs={12} sm={5}>
+            <Input
+              placeholder="location"
+              value={location}
+              onChange={handleChangeLocation}
+              fullWidth
+            ></Input>
+          </Grid>
+          <Grid item xs={12} sm={2}>
+            <Button
+              variant="contained"
+              type="submit"
+              fullWidth
+              color="primary"
+              size="small"
+            >
+              Search
+            </Button>
+          </Grid>
+        </Grid>
       </form>
       <ul>
         {positions.map(({ id, company, title }) => (
@@ -61,7 +79,7 @@ const App = () => {
           </li>
         ))}
       </ul>
-    </Fragment>
+    </Container>
   );
 };
 
