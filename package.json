@@ -1,7 +1,7 @@
 {
-  "name": "boilerplate-react-parcel",
+  "name": "github-jobs-react",
   "version": "1.0.0",
-  "description": "Boilerplate for React.js app with parcel bundler",
+  "description": "GitHub Jobs API React app",
   "main": "src/index.html",
   "scripts": {
     "setup": "sh init.sh",
@@ -11,7 +11,7 @@
     "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Dimitri Marion",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.8.7",
