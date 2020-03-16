@@ -4,7 +4,7 @@ import {
   PARAM_LOCATION,
   CORS_PROXY
 } from "../../constants";
-import React, { Fragment, useState, useEffect, useReducer } from "react";
+import React from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Input from "@material-ui/core/Input";
@@ -15,15 +15,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Box from "@material-ui/core/Box";
 import ErrorSnackbar from "../ErrorSnackbar";
 import useGitHubApi from "@hooks/useGitHubApi";
-
-/* const urlReducer = (state, action) => {
-  switch (action.type) {
-    case "UPDATE_URL":
-
-    default:
-      throw new Error();
-  }
-}; */
+import SearchForm from "../SearchForm";
 
 const App = () => {
   const [description, bindDescription] = useInput("Description", "");
@@ -43,28 +35,11 @@ const App = () => {
   return (
     <Container component="main" maxWidth="md">
       <CssBaseline />
-      <form onSubmit={handleSubmit}>
-        <Grid container direction="row" spacing={3}>
-          <Grid item xs={12} sm={5}>
-            <Input {...bindDescription} fullWidth />
-          </Grid>
-
-          <Grid item xs={12} sm={5}>
-            <Input {...bindLocation} fullWidth />
-          </Grid>
-          <Grid item xs={12} sm={2}>
-            <Button
-              variant="contained"
-              type="submit"
-              fullWidth
-              color="primary"
-              size="small"
-            >
-              Search
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
+      <SearchForm
+        bindDescription={bindDescription}
+        bindLocation={bindLocation}
+        handleSubmit={handleSubmit}
+      />
 
       {isError && <ErrorSnackbar />}
 

@@ -1,13 +1,9 @@
 import React from "react";
-import useInput from "@hooks/useInput";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import Grid from "@material-ui/core/Grid";
 
-const SearchForm = () => {
-  const [description, bindDescription] = useInput("Description", "");
-  const [location, bindLocation] = useInput("Location", "");
-
+const SearchForm = ({ bindDescription, bindLocation, handleSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
       <Grid container direction="row" spacing={3}>
