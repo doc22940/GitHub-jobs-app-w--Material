@@ -1,31 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
+import dataFetchReducer from "../reducers/dataFetchReducer";
 
 const useGitHubApi = (initialUrl, initialData) => {
-  const [data, setData] = useState(initialData);
   const [url, setUrl] = useState(initialUrl);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [state, dispatch] = useReducer(dataFetchReducer, {
+    isLoading: false,
+    isError: false,
+    data: initialData
+  });
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsError(false);
-      setIsLoading(true);
+      dispatch({ type: "FETCH_INIT" });
 
       try {
         const response = await fetch(url);
         const data = await response.json();
-        setData(data);
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch {
-        setIsError(true);
+        dispatch({ type: "FETCH_FAILURE" });
       }
-
-      setIsLoading(false);
     };
 
     fetchData();
   }, [url]);
 
-  return [{ data, isLoading, isError }, setUrl];
+  return [state, setUrl];
 };
 
 export default useGitHubApi;
