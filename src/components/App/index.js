@@ -1,3 +1,9 @@
+import {
+  PATH_BASE,
+  PARAM_DESCRIPTION,
+  PARAM_LOCATION,
+  CORS_PROXY
+} from "../../constants";
 import React, { Fragment, useState, useEffect, useReducer } from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,11 +14,7 @@ import useInput from "@hooks/useInput";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Box from "@material-ui/core/Box";
 import ErrorSnackbar from "../ErrorSnackbar";
-
-const PATH_BASE = "https://jobs.github.com/positions.json";
-const PARAM_DESCRIPTION = "description=";
-const PARAM_LOCATION = "location=";
-const PARAM_PAGE = "page=";
+import useGitHubApi from "@hooks/useGitHubApi";
 
 /* const urlReducer = (state, action) => {
   switch (action.type) {
@@ -24,37 +26,16 @@ const PARAM_PAGE = "page=";
 }; */
 
 const App = () => {
-  const [positions, setPositions] = useState([]);
   const [description, bindDescription] = useInput("Description", "");
   const [location, bindLocation] = useInput("Location", "");
-  const [url, setUrl] = useState(
-    `https://cors-anywhere.herokuapp.com/${PATH_BASE}?${PARAM_DESCRIPTION}&${PARAM_LOCATION}`
+  const [{ data: positions, isLoading, isError }, doFetch] = useGitHubApi(
+    `${CORS_PROXY}${PATH_BASE}`,
+    []
   );
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsError(false);
-      setIsLoading(true);
-
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        setPositions(data);
-      } catch {
-        setIsError(true);
-      }
-
-      setIsLoading(false);
-    };
-    // Fetch latest jobs posted by default
-    fetchData();
-  }, [url]);
 
   const handleSubmit = event => {
-    setUrl(
-      `https://cors-anywhere.herokuapp.com/${PATH_BASE}?${PARAM_DESCRIPTION}${description}&${PARAM_LOCATION}${location}`
+    doFetch(
+      `${CORS_PROXY}${PATH_BASE}?${PARAM_DESCRIPTION}${description}&${PARAM_LOCATION}${location}`
     );
     event.preventDefault();
   };
