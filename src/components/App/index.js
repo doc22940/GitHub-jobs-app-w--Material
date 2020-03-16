@@ -5,17 +5,12 @@ import {
   CORS_PROXY
 } from "../../constants";
 import React from "react";
-import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Input from "@material-ui/core/Input";
-import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import useInput from "@hooks/useInput";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Box from "@material-ui/core/Box";
-import ErrorSnackbar from "../ErrorSnackbar";
 import useGitHubApi from "@hooks/useGitHubApi";
 import SearchForm from "../SearchForm";
+import JobList from "../JobList";
 
 const App = () => {
   const [description, bindDescription] = useInput("Description", "");
@@ -41,26 +36,7 @@ const App = () => {
         handleSubmit={handleSubmit}
       />
 
-      {isError && <ErrorSnackbar />}
-
-      {isLoading ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          height="50vh"
-        >
-          <CircularProgress color="secondary" />
-        </Box>
-      ) : (
-        <ul>
-          {positions.map(({ id, company, title }) => (
-            <li key={id}>
-              {company} *** {title}
-            </li>
-          ))}
-        </ul>
-      )}
+      <JobList positions={positions} isError={isError} isLoading={isLoading} />
     </Container>
   );
 };
