@@ -7,6 +7,7 @@ import Container from "@material-ui/core/Container";
 import useInput from "@hooks/useInput";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Box from "@material-ui/core/Box";
+import ErrorSnackbar from "../ErrorSnackbar";
 
 const PATH_BASE = "https://jobs.github.com/positions.json";
 const PARAM_DESCRIPTION = "description=";
@@ -30,14 +31,21 @@ const App = () => {
     `https://cors-anywhere.herokuapp.com/${PATH_BASE}?${PARAM_DESCRIPTION}&${PARAM_LOCATION}`
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsError(false);
       setIsLoading(true);
-      const response = await fetch(url);
-      const data = await response.json();
 
-      setPositions(data);
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        setPositions(data);
+      } catch {
+        setIsError(true);
+      }
+
       setIsLoading(false);
     };
     // Fetch latest jobs posted by default
@@ -49,15 +57,6 @@ const App = () => {
       `https://cors-anywhere.herokuapp.com/${PATH_BASE}?${PARAM_DESCRIPTION}${description}&${PARAM_LOCATION}${location}`
     );
     event.preventDefault();
-  };
-
-  const fetchPositions = url => {
-    setIsLoading(true);
-    fetch(url)
-      .then(response => response.json())
-      .then(result => setPositions(result))
-      .catch(error => error);
-    setIsLoading(false);
   };
 
   return (
@@ -85,6 +84,9 @@ const App = () => {
           </Grid>
         </Grid>
       </form>
+
+      {isError && <ErrorSnackbar />}
+
       {isLoading ? (
         <Box
           display="flex"
