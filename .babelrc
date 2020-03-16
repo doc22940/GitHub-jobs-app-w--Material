@@ -7,7 +7,7 @@
       {
         "root": ["./src"],
         "alias": {
-          "@images": "./assets/images"
+          "@hooks": "./src/hooks"
         }
       }
     ]
