@@ -5,6 +5,8 @@ import Input from "@material-ui/core/Input";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import useInput from "@hooks/useInput";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Box from "@material-ui/core/Box";
 
 const PATH_BASE = "https://jobs.github.com/positions.json";
 const PARAM_DESCRIPTION = "description=";
@@ -27,25 +29,35 @@ const App = () => {
   const [url, setUrl] = useState(
     `https://cors-anywhere.herokuapp.com/${PATH_BASE}?${PARAM_DESCRIPTION}&${PARAM_LOCATION}`
   );
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const response = await fetch(url);
+      const data = await response.json();
+
+      setPositions(data);
+      setIsLoading(false);
+    };
     // Fetch latest jobs posted by default
-    fetchPositions(url);
+    fetchData();
   }, [url]);
 
   const handleSubmit = event => {
     setUrl(
       `https://cors-anywhere.herokuapp.com/${PATH_BASE}?${PARAM_DESCRIPTION}${description}&${PARAM_LOCATION}${location}`
     );
-
     event.preventDefault();
   };
 
   const fetchPositions = url => {
+    setIsLoading(true);
     fetch(url)
       .then(response => response.json())
       .then(result => setPositions(result))
       .catch(error => error);
+    setIsLoading(false);
   };
 
   return (
@@ -73,13 +85,24 @@ const App = () => {
           </Grid>
         </Grid>
       </form>
-      <ul>
-        {positions.map(({ id, company, title }) => (
-          <li key={id}>
-            {company} *** {title}
-          </li>
-        ))}
-      </ul>
+      {isLoading ? (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="50vh"
+        >
+          <CircularProgress color="secondary" />
+        </Box>
+      ) : (
+        <ul>
+          {positions.map(({ id, company, title }) => (
+            <li key={id}>
+              {company} *** {title}
+            </li>
+          ))}
+        </ul>
+      )}
     </Container>
   );
 };
