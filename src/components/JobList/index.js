@@ -7,6 +7,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
+import { formatDistanceToNow } from "date-fns";
 
 const JobList = ({ positions, isError, isLoading }) => {
   return (
@@ -39,7 +40,9 @@ const JobList = ({ positions, isError, isLoading }) => {
                   <Grid item xs={4}>
                     <ListItemText
                       primary={location}
-                      secondary={created_at}
+                      secondary={`${formatDistanceToNow(
+                        new Date(created_at)
+                      )} ago`}
                       style={{ textAlign: "right" }}
                     />
                   </Grid>
