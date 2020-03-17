@@ -7,6 +7,10 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ErrorSnackbar from "../JobList/ErrorSnackbar";
+import { Typography } from "@material-ui/core";
+import ListItemText from "@material-ui/core/ListItemText";
+import Grid from "@material-ui/core/Grid";
+import Divider from "@material-ui/core/Divider";
 
 const JobDescription = () => {
   const { id } = useParams();
@@ -30,6 +34,29 @@ const JobDescription = () => {
         </Box>
       ) : (
         <Container component="main" maxWidth="md" m={2}>
+          <Grid
+            container
+            spacing={2}
+            alignItems="center"
+            justify="space-between"
+          >
+            <Grid item xs={8}>
+              <ListItemText
+                primary={<Typography variant="h6">{position.title}</Typography>}
+                secondary={position.company}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <ListItemText
+                primary={
+                  <Typography variant="h6">{position.location}</Typography>
+                }
+                secondary={position.type}
+                style={{ textAlign: "right" }}
+              />
+            </Grid>
+          </Grid>
+          <Divider />
           {ReactHtmlParser(position.description)}
         </Container>
       )}
