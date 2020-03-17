@@ -54,4 +54,6 @@ const JobList = ({ positions, isError, isLoading }) => {
   );
 };
 
+JobList.whyDidYouRender = true;
+
 export default JobList;
