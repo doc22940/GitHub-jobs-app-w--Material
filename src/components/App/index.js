@@ -4,12 +4,13 @@ import {
   PARAM_LOCATION,
   CORS_PROXY
 } from "../../constants";
-import React from "react";
+import React, { Fragment } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import useGitHubApi from "@hooks/useGitHubApi";
 import SearchForm from "../SearchForm";
 import JobList from "../JobList";
+import Header from "../Header";
 
 const App = () => {
   const [{ data: positions, isLoading, isError }, doFetch] = useGitHubApi(
@@ -25,12 +26,19 @@ const App = () => {
   };
 
   return (
-    <Container component="main" maxWidth="md">
+    <Fragment>
       <CssBaseline />
-      <SearchForm handleSubmit={handleSubmit} />
+      <Header />
+      <Container component="main" maxWidth="md" m={2}>
+        <SearchForm handleSubmit={handleSubmit} />
 
-      <JobList positions={positions} isError={isError} isLoading={isLoading} />
-    </Container>
+        <JobList
+          positions={positions}
+          isError={isError}
+          isLoading={isLoading}
+        />
+      </Container>
+    </Fragment>
   );
 };
 export default App;
