@@ -8,6 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import { formatDistanceToNow } from "date-fns";
+import { Link } from "react-router-dom";
 
 const JobList = ({ positions, isError, isLoading }) => {
   return (
@@ -27,7 +28,7 @@ const JobList = ({ positions, isError, isLoading }) => {
         <List>
           {positions.map(({ id, company, title, location, created_at }) => (
             <Fragment key={id}>
-              <ListItem>
+              <ListItem button component={Link} to={`/position/${id}`}>
                 <Grid
                   container
                   alignItems="center"
