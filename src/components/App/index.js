@@ -14,20 +14,26 @@ import SearchForm from "../SearchForm";
 import JobList from "../JobList";
 import Header from "../Header";
 import JobDescription from "../JobDescription";
+import SavedJobs from "../SavedJobs";
 
 const App = () => {
   const [{ data: positions, isLoading, isError }, doFetch] = useGitHubApi(
     `${CORS_PROXY}${PATH_BASE}`,
     []
   );
-
   const [savedPositions, setSavedPositions] = useLocalStorage(
     "savedPositions",
     []
   );
 
   const handleSave = position => () => {
-    setSavedPositions([...savedPositions, position]);
+    if (!savedPositions.some(({ id }) => id == position.id)) {
+      setSavedPositions([...savedPositions, position]);
+    }
+  };
+
+  const handleDelete = position => () => {
+    setSavedPositions(savedPositions.filter(({ id }) => id !== position.id));
   };
 
   const handleSubmit = (description, location) => event => {
@@ -40,8 +46,8 @@ const App = () => {
   return (
     <Fragment>
       <CssBaseline />
-      <Header />
       <Switch>
+        <Header />
         <Route exact path="/">
           <Container component="main" maxWidth="md" m={2}>
             <SearchForm handleSubmit={handleSubmit} />
@@ -55,7 +61,15 @@ const App = () => {
         </Route>
 
         <Route path="/position/:id">
-          <JobDescription handleSave={handleSave} />
+          <JobDescription
+            handleSave={handleSave}
+            handleDelete={handleDelete}
+            savedJobs={savedPositions}
+          />
+        </Route>
+
+        <Route path="/saved">
+          <SavedJobs savedPositions={savedPositions} />
         </Route>
       </Switch>
     </Fragment>

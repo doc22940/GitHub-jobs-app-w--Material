@@ -44,5 +44,5 @@ const SearchForm = ({ handleSubmit }) => {
     </form>
   );
 };
-SearchForm.whyDidYouRender = true;
+
 export default SearchForm;

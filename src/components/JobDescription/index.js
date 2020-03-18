@@ -7,7 +7,7 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ErrorSnackbar from "../JobList/ErrorSnackbar";
-import { Typography, Hidden } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
@@ -16,8 +16,8 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { makeStyles } from "@material-ui/core/styles";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles(theme => ({
   summary: {
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const JobDescription = ({ handleSave }) => {
+const JobDescription = ({ handleSave, handleDelete, savedJobs }) => {
   const classes = useStyles();
   const { id } = useParams();
   const [{ data: position, isLoading, isError }] = useGitHubApi(
@@ -92,16 +92,27 @@ const JobDescription = ({ handleSave }) => {
               {ReactHtmlParser(position.how_to_apply)}
             </ExpansionPanelDetails>
           </ExpansionPanel>
-
-          <Button
-            variant="contained"
-            color="secondary"
-            size="medium"
-            startIcon={<FavoriteIcon />}
-            onClick={handleSave(position)}
-          >
-            Save
-          </Button>
+          {savedJobs.some(({ id }) => id == position.id) ? (
+            <Button
+              variant="contained"
+              color="secondary"
+              size="medium"
+              startIcon={<DeleteIcon />}
+              onClick={handleDelete(position)}
+            >
+              Delete
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="secondary"
+              size="medium"
+              startIcon={<FavoriteIcon />}
+              onClick={handleSave(position)}
+            >
+              Save
+            </Button>
+          )}
 
           {ReactHtmlParser(position.description)}
         </Container>
