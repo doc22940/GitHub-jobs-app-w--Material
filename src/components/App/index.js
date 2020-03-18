@@ -6,6 +6,7 @@ import {
 } from "../../constants";
 import React, { Fragment } from "react";
 import { BrowserRouter as Switch, Route } from "react-router-dom";
+import { useLocalStorage } from "react-recipes";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import useGitHubApi from "@hooks/useGitHubApi";
@@ -19,6 +20,15 @@ const App = () => {
     `${CORS_PROXY}${PATH_BASE}`,
     []
   );
+
+  const [savedPositions, setSavedPositions] = useLocalStorage(
+    "savedPositions",
+    []
+  );
+
+  const handleSave = position => () => {
+    setSavedPositions([...savedPositions, position]);
+  };
 
   const handleSubmit = (description, location) => event => {
     doFetch(
@@ -44,7 +54,9 @@ const App = () => {
           </Container>
         </Route>
 
-        <Route path="/position/:id" component={JobDescription} />
+        <Route path="/position/:id">
+          <JobDescription handleSave={handleSave} />
+        </Route>
       </Switch>
     </Fragment>
   );
