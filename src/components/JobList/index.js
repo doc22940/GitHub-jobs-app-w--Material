@@ -9,11 +9,16 @@ import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import { formatDistanceToNow } from "date-fns";
 import { Link } from "react-router-dom";
+import { Typography } from "@material-ui/core";
 
 const JobList = ({ positions, isError, isLoading }) => {
   return (
     <Fragment>
       {isError && <ErrorSnackbar />}
+
+      {!isLoading && positions.length == 0 && (
+        <Typography variant="h3">No jobs found.</Typography>
+      )}
 
       {isLoading ? (
         <Box

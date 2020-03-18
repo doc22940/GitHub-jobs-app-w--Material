@@ -27,9 +27,7 @@ const App = () => {
   );
 
   const handleSave = position => () => {
-    if (!savedPositions.some(({ id }) => id == position.id)) {
-      setSavedPositions([...savedPositions, position]);
-    }
+    setSavedPositions([...savedPositions, position]);
   };
 
   const handleDelete = position => () => {
